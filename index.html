@@ -19,13 +19,15 @@ body{background:var(--bg);font-family:'Noto Sans KR',sans-serif;color:var(--text
 
 /* ── HEADER ── */
 .hdr{
-  background:#1a1f2e;color:#fff;padding:16px 18px 14px;
+  background:#fff;color:#1a1f2e;padding:12px 14px 10px;
   position:sticky;top:0;z-index:100;
-  box-shadow:0 2px 12px rgba(0,0,0,0.18);
+  border-bottom:1px solid #eceef2;
 }
-.hdr-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;}
-.hdr-title{font-size:15px;font-weight:700;letter-spacing:-0.3px;}
-.hdr-date{font-size:11px;color:#94a3b8;margin-top:2px;}
+.hdr-top{margin-bottom:8px;}
+.hdr-row2{display:flex;align-items:center;justify-content:space-between;margin-top:3px;}
+.hdr-info{font-size:11px;color:#64748b;font-weight:500;}
+.hdr-title{font-size:15px;font-weight:700;letter-spacing:-0.3px;color:#1a1f2e;}
+.hdr-date{display:none;}
 .badge-hdr{font-size:10px;background:#2563eb;color:#fff;padding:3px 8px;border-radius:20px;font-weight:600;}
 
 /* Progress Bar */
@@ -130,29 +132,29 @@ body{background:var(--bg);font-family:'Noto Sans KR',sans-serif;color:var(--text
 .fp-img-wrap img.zoomed{cursor:zoom-out;transform-origin:top left;}
 .fp-hint{text-align:center;padding:6px;font-size:10.5px;color:var(--sub);background:var(--card);}
 
-.pwbox{margin:10px 12px 0;background:linear-gradient(135deg,#1e293b,#334155);
-  border-radius:12px;padding:12px 14px;color:#fff;box-shadow:0 2px 8px rgba(0,0,0,.15);}
-.pwbox-title{font-size:13px;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:6px;}
-.pwbox-body{display:flex;gap:10px;margin-top:10px;flex-wrap:wrap;align-items:center;}
-.pwbox.folded .pwbox-body{display:none;}
-.pw-item{background:rgba(255,255,255,.12);border-radius:8px;padding:8px 14px;
-  display:flex;flex-direction:column;align-items:center;min-width:90px;}
+.pwbar{margin:8px 12px 0;background:#f8fafc;border:1px solid #eceef2;border-radius:9px;
+  padding:8px 12px;font-size:12px;color:#475569;display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+.pwbar b{color:#0f766e;font-family:monospace;font-size:14px;letter-spacing:1px;}
 .pw-lbl{font-size:10px;color:#cbd5e1;}
 .pw-val{font-size:22px;font-weight:800;letter-spacing:3px;font-family:monospace;color:#fbbf24;}
 .pw-note{font-size:10px;color:#94a3b8;flex-basis:100%;margin-top:2px;}
 
 .bot-btn.export{background:#fbbf24;color:#1a1f2e;}
+
+.link-share-btn{background:#f1f5f9;color:#0f766e;border:1px solid #d8e0e8;border-radius:16px;
+  padding:4px 11px;font-size:11px;font-weight:600;cursor:pointer;font-family:inherit;white-space:nowrap;}
+.link-share-btn:active{background:#e2e8f0;}
 </style>
 </head>
 <body>
 
 <div class="hdr">
   <div class="hdr-top">
-    <div>
-      <div class="hdr-title">🏠 59A 사전점검 체크리스트</div>
-      <div class="hdr-date">아산탕정 C2블럭 · 110동 1802호 · 확장형</div>
+    <div class="hdr-title">🏠 59A 사전점검 체크리스트</div>
+    <div class="hdr-row2">
+      <span class="hdr-info">59㎡A · 110동 1802호 · 확장형</span>
+      <button class="link-share-btn" onclick="shareLink()">🔗 링크공유</button>
     </div>
-    <span class="badge-hdr">59㎡A</span>
   </div>
   <div class="prog-wrap"><div class="prog-bar" id="progBar" style="width:0%"></div></div>
   <div class="prog-info">
@@ -161,16 +163,7 @@ body{background:var(--bg);font-family:'Noto Sans KR',sans-serif;color:var(--text
   </div>
 </div>
 
-<div class="pwbox" id="pwbox">
-  <div class="pwbox-title" onclick="document.getElementById('pwbox').classList.toggle('folded')">
-    🔑 내집방문의 날 비밀번호 <span style="font-size:10px;color:#94a3b8;font-weight:400;">(탭하면 접기/펼치기)</span>
-  </div>
-  <div class="pwbox-body">
-    <div class="pw-item"><span class="pw-lbl">공동현관</span><span class="pw-val">1100</span></div>
-    <div class="pw-item"><span class="pw-lbl">세대</span><span class="pw-val">1872</span></div>
-    <div class="pw-note">⚠️ 타인 무단출입 방지 위해 공유 지양</div>
-  </div>
-</div>
+<div class="pwbar">🔑 공동현관 <b>1100</b> · 세대 <b>1872</b></div>
 
 <div class="stats">
   <div class="stat ok"><div class="stat-num" id="sOk">0</div><div class="stat-lbl">✅ 이상없음</div></div>
@@ -211,8 +204,9 @@ body{background:var(--bg);font-family:'Noto Sans KR',sans-serif;color:var(--text
     <p style="font-size:11px;color:#6b7280;margin:0 0 8px;">아래 복사해서 가족 카톡방에 붙여넣으세요. 셋이 올린 걸 모아 취합합니다.</p>
     <textarea id="exportText" readonly style="width:100%;height:280px;border:1px solid #e2e6ed;border-radius:8px;padding:10px;font-size:11px;font-family:monospace;resize:none;background:#f9fafb;"></textarea>
     <div style="display:flex;gap:8px;margin-top:10px;">
-      <button class="bot-btn export" style="flex:1;" onclick="copyExport()">📋 복사하기</button>
-      <button class="modal-close" style="flex:1;" onclick="closeExport()">닫기</button>
+      <button class="bot-btn export" style="flex:1.4;background:#fee500;color:#3c1e1e;" onclick="shareExport()">💬 카톡으로 보내기</button>
+      <button class="bot-btn export" style="flex:1;" onclick="copyExport()">📋 복사</button>
+      <button class="modal-close" style="flex:0.8;" onclick="closeExport()">닫기</button>
     </div>
   </div>
 </div>
@@ -593,6 +587,29 @@ function copyExport(){
   alert(done?'복사됨! 카톡방에 붙여넣으세요':'복사 실패 - 길게 눌러 직접 복사하세요');
 }
 function closeExport(){document.getElementById('exportBg').classList.remove('show');}
+
+// ── 링크 공유 (우상단 버튼) ──
+function shareLink(){
+  const url=location.href.split('#')[0].split('?')[0];
+  const msg='59A 사전점검 체크리스트 (110동 1802호)\n각자 구역 체크해주세요!\n'+url;
+  if(navigator.share){
+    navigator.share({title:'59A 사전점검 체크리스트', text:'110동 1802호 사전점검 - 각자 구역 체크해주세요', url:url}).catch(()=>{});
+  } else {
+    let ok=false;
+    try{navigator.clipboard.writeText(msg);ok=true;}catch(e){}
+    if(ok)alert('링크 복사됨! 카톡방에 붙여넣으세요\n'+url);
+    else prompt('아래 링크를 복사하세요', url);
+  }
+}
+// ── 현황 카톡 공유 (줄바꿈 보존) ──
+function shareExport(){
+  const t=document.getElementById('exportText').value;
+  if(navigator.share){
+    navigator.share({text:t}).catch(()=>{});
+  } else {
+    copyExport();
+  }
+}
 </script>
 </body>
 </html>
